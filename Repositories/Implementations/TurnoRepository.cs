@@ -1,4 +1,5 @@
-﻿using TurnosLibrary.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using TurnosLibrary.Entities;
 using TurnosLibrary.Repositories.Interfaces;
 
 namespace TurnosLibrary.Repositories.Implementations
@@ -13,9 +14,9 @@ namespace TurnosLibrary.Repositories.Implementations
       _context = context;
       }
 
-    public bool Delete(int id, string motivo)
+    public async Task<bool> Delete(int id, string motivo)
       {
-      var turno = _context.TTurnos.Find(id);
+      var turno = await _context.TTurnos.FindAsync(id);
 
       if (turno != null)
         {
@@ -23,43 +24,43 @@ namespace TurnosLibrary.Repositories.Implementations
         turno.FechaCancelacion = DateTime.Now;
         _context.TTurnos.Update(turno);
 
-        return _context.SaveChanges() > 0;
+        return await _context.SaveChangesAsync() > 0;
         }
       return false;
       }
 
-    public List<TTurno> GetAll()
+    public async Task<List<TTurno>> GetAll()
       {
-      return _context.TTurnos.Where(t => t.FechaCancelacion.HasValue == false).ToList();
+      return await _context.TTurnos.Where(t => t.FechaCancelacion.HasValue == false).ToListAsync();
       }
 
-    public List<TTurno> GetCanceled(int days)
+    public async Task<List<TTurno>> GetCanceled(int days)
       {
       DateTime from = DateTime.Now.AddDays(-days);
-      return _context.TTurnos.Where(t => t.FechaCancelacion >= from).ToList();
+      return await _context.TTurnos.Where(t => t.FechaCancelacion >= from).ToListAsync();
       }
 
-    public List<TTurno> GetByClient(string cliente)
+    public async Task<List<TTurno>> GetByClient(string cliente)
       {
-      return _context.TTurnos.Where(t => t.Cliente == cliente && string.IsNullOrEmpty(t.MotivoCancelacion)).ToList();
+      return await _context.TTurnos.Where(t => t.Cliente == cliente && string.IsNullOrEmpty(t.MotivoCancelacion)).ToListAsync();
       }
 
-    public List<TTurno> GetByDate(string fecha)
+    public async Task<List<TTurno>> GetByDate(string fecha)
       {
-      return _context.TTurnos.Where(t => t.Fecha == fecha).ToList();
+      return await _context.TTurnos.Where(t => t.Fecha == fecha).ToListAsync();
       }
 
-    public bool Save(TTurno turno)
+    public async Task<bool> Save(TTurno turno)
       {
       if (turno.Id == 0)
         {
         _context.TTurnos.Add(turno);
-        return _context.SaveChanges() > 0;
+        return await _context.SaveChangesAsync() > 0;
         }
       else
         {
         _context.TTurnos.Update(turno);
-        return _context.SaveChanges() > 0;
+        return await _context.SaveChangesAsync() > 0;
         }
       }
 

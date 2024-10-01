@@ -13,34 +13,34 @@ namespace TurnosLibrary.Services.Implementations
       _turnoRepository = turnoRepository;
       }
 
-    public bool Delete(int id, string motivo)
+    public async Task<bool> Delete(int id, string motivo)
       {
-      return _turnoRepository.Delete(id, motivo);
+      return await _turnoRepository.Delete(id, motivo);
       }
 
-    public List<TTurno> GetAll()
+    public async Task<List<TTurno>> GetAll()
       {
-      return _turnoRepository.GetAll();
+      return await _turnoRepository.GetAll();
       }
 
-    public List<TTurno> GetByClient(string cliente)
+    public async Task<List<TTurno>> GetByClient(string cliente)
       {
-      return _turnoRepository.GetByClient(cliente);
+      return await _turnoRepository.GetByClient(cliente);
       }
 
-    public List<TTurno> GetByDate(string fecha)
+    public async Task<List<TTurno>> GetByDate(string fecha)
       {
-      return _turnoRepository.GetByDate(fecha);
+      return await _turnoRepository.GetByDate(fecha);
       }
 
-    public List<TTurno> GetCanceled(int days)
+    public async Task<List<TTurno>> GetCanceled(int days)
       {
-      return _turnoRepository.GetCanceled(days);
+      return await _turnoRepository.GetCanceled(days);
       }
 
-    public bool Save(TTurno turno)
+    public async Task<bool> Save(TTurno turno)
       {
-      return _turnoRepository.Save(turno);
+      return await _turnoRepository.Save(turno);
       }
     }
   }
